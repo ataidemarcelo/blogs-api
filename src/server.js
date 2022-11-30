@@ -9,4 +9,6 @@ app.get('/', (_request, response) => {
   response.send();
 });
 
+app.get('/ping', (_req, res) => res.status(200).send('Pong!'));
+
 app.listen(port, () => console.log('ouvindo porta', port));
