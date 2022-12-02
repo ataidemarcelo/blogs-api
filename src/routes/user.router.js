@@ -9,5 +9,6 @@ router.post('/', userController.createUser);
 
 router.use(authMiddleware);
 router.get('/', userController.listUsers);
+router.get('/:id', userController.getUser);
 
 module.exports = router;
