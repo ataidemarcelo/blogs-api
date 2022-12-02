@@ -22,8 +22,17 @@ const checkUserExist = async (email) => {
   return false;
 };
 
+const listUsers = async () => {
+  const users = await User.findAll({
+    attributes: { exclude: 'password' },
+  });
+
+  return users;
+};
+
 module.exports = {
   validateBody,
   createUser,
   checkUserExist,
+  listUsers,
 };

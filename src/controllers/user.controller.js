@@ -8,12 +8,13 @@ const createUser = async (req, res, next) => {
     error.statusCode = 400;
     return next(error);
   }
-  
+
   const userExist = await userService.checkUserExist(value.email);
   if (!userExist) {
     const newError = new Error('User already registered');
     newError.statusCode = 409;
-    throw newError;
+    
+    return next(newError);
   }
   
   const newUser = await userService.createUser(value);
@@ -27,6 +28,13 @@ const createUser = async (req, res, next) => {
   return res.status(201).json({ token });
 };
 
+const listUsers = async (_req, res) => {
+  const users = await userService.listUsers();
+
+  return res.status(200).json(users);
+};
+
 module.exports = {
   createUser,
+  listUsers,
 };
