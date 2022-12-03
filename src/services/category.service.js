@@ -13,7 +13,14 @@ const addNewCategory = async ({ name }) => {
   return category;
 };
 
+const listCategories = async () => {
+  const categories = await Category.findAll();
+
+  return categories;
+};
+
 module.exports = {
   validateBody,
   addNewCategory,
+  listCategories,
 };
