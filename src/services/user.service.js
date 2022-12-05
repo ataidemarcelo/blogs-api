@@ -39,10 +39,13 @@ const getUser = async (userId) => {
   return user;
 };
 
+const deleteUser = async (userId) => User.destroy({ where: { id: userId } }); 
+
 module.exports = {
   validateBody,
   createUser,
   checkUserExist,
   listUsers,
   getUser,
+  deleteUser,
 };

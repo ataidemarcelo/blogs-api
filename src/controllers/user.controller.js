@@ -48,8 +48,17 @@ const getUser = async (req, res, next) => {
    return res.status(200).json(user);
 };
 
+const deleteUser = async (req, res) => {
+  const { userId } = req.user;
+
+  await userService.deleteUser(userId);
+
+  return res.status(204).end();
+};
+
 module.exports = {
   createUser,
   listUsers,
   getUser,
+  deleteUser,
 };
