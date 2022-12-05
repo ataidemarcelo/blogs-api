@@ -87,6 +87,8 @@ const updatePost = async (postId, dataForUpdatePost) => {
   return result;
 };
 
+const deletePost = async (postId) => BlogPost.destroy({ where: { id: postId } });
+
 module.exports = {
   validateBody,
   validateCategoryIds,
@@ -94,4 +96,5 @@ module.exports = {
   listPosts,
   getPost,
   updatePost,
+  deletePost,
 };
