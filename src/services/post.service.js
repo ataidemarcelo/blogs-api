@@ -1,4 +1,4 @@
-const { Category, BlogPost, PostCategory } = require('../models');
+const { User, Category, BlogPost, PostCategory } = require('../models');
 
 const { postFieldsSchema } = require('./validations/joi/schema.post');
 
@@ -47,8 +47,28 @@ const createPost = async (userId, dataForNewPost) => {
   return result;
 };
 
+// eslint-disable-next-line max-lines-per-function
+const listPosts = async () => {
+  const result = await BlogPost.findAll({
+    include: [
+      { 
+        model: User, 
+        as: 'user',
+        attributes: ['id', 'displayName', 'email', 'image'],
+      },
+      {
+        model: Category,
+        as: 'categories',
+      },
+    ],
+  });
+
+  return result;
+};
+
 module.exports = {
   validateBody,
   validateCategoryIds,
   createPost,
+  listPosts,
 };
