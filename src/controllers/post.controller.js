@@ -31,7 +31,23 @@ const listPosts = async (_req, res) => {
   res.status(200).json(post);
 };
 
+const getPost = async (req, res, next) => {
+  const { id } = req.params;
+
+  const post = await postService.getPost(id);
+
+  if (!post) {
+    const newError = new Error('Post does not exist');
+    newError.statusCode = 404;
+
+    return next(newError);
+  }
+
+  return res.status(200).json(post);
+};
+
 module.exports = {
   createPost,
   listPosts,
+  getPost,
 };

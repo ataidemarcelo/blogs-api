@@ -66,9 +66,24 @@ const listPosts = async () => {
   return result;
 };
 
+const getPost = async (postId) => {
+  const result = await BlogPost.findOne(
+    { 
+      where: { id: postId },
+      include: [
+        { model: User, as: 'user', attributes: { exclude: ['password'] } },
+        { model: Category, as: 'categories' },
+      ],
+    },
+  );
+
+  return result;
+};
+
 module.exports = {
   validateBody,
   validateCategoryIds,
   createPost,
   listPosts,
+  getPost,
 };
