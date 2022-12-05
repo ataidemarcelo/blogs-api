@@ -1,3 +1,5 @@
+const { Op } = require('sequelize');
+
 const { User, Category, BlogPost, PostCategory } = require('../models');
 
 const { postFieldsSchema } = require('./validations/joi/schema.post');
@@ -89,6 +91,27 @@ const updatePost = async (postId, dataForUpdatePost) => {
 
 const deletePost = async (postId) => BlogPost.destroy({ where: { id: postId } });
 
+const search = async (searchTerm) => {
+  const result = await BlogPost.findAll({
+    where: {
+      [Op.or]: [
+        { title: { [Op.like]: `%${searchTerm}%` } },
+        { content: { [Op.like]: `%${searchTerm}%` } },
+      ],
+    },
+    include: [
+        {
+        model: User,
+        as: 'user',
+        attributes: { exclude: ['password'] },
+      },
+      { model: Category, as: 'categories' },
+    ],
+  });
+
+  return result;
+};
+
 module.exports = {
   validateBody,
   validateCategoryIds,
@@ -97,4 +120,5 @@ module.exports = {
   getPost,
   updatePost,
   deletePost,
+  search,
 };
