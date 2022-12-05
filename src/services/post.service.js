@@ -9,8 +9,6 @@ const validateBody = (requestBody) => {
 };
 
 const validateCategoryIds = async (listCategoryIds) => {
-  console.log(listCategoryIds);
-
   const categoryIdsInPromises = listCategoryIds.map(
     async (categoryId) => Category.findByPk(categoryId),
   );
@@ -25,7 +23,6 @@ const validateCategoryIds = async (listCategoryIds) => {
 };
 
 const createPost = async (userId, dataForNewPost) => {
-  console.log(userId, dataForNewPost);
   const date = Date.now();
 
   const newPost = {
@@ -47,7 +44,6 @@ const createPost = async (userId, dataForNewPost) => {
   return result;
 };
 
-// eslint-disable-next-line max-lines-per-function
 const listPosts = async () => {
   const result = await BlogPost.findAll({
     include: [
@@ -80,10 +76,22 @@ const getPost = async (postId) => {
   return result;
 };
 
+const updatePost = async (postId, dataForUpdatePost) => {
+   const { title, content } = dataForUpdatePost;
+
+   const result = await BlogPost.update(
+    { title, content },
+    { where: { id: postId } },
+  );
+
+  return result;
+};
+
 module.exports = {
   validateBody,
   validateCategoryIds,
   createPost,
   listPosts,
   getPost,
+  updatePost,
 };

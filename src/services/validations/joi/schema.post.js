@@ -14,6 +14,15 @@ const postFieldsSchema = Joi.object({
   'number.base': MSG_FOR_REQUIRED_FIELDS,
 });
 
+const updateFieldsSchema = Joi.object({
+  title: Joi.string().required(),
+  content: Joi.string().min(6).required(),
+}).messages({
+  'any.required': MSG_FOR_REQUIRED_FIELDS,
+  'string.empty': MSG_FOR_REQUIRED_FIELDS,
+});
+
 module.exports = {
   postFieldsSchema,
+  updateFieldsSchema,
 };
