@@ -112,6 +112,8 @@ const search = async (req, res) => {
 
   const result = await postService.search(searchTerm);
 
+  if (result.length === 0) return res.status(404).json({ message: 'Not found!' });
+
   return res.status(200).json(result);
 };
 
