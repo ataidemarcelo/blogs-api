@@ -10,5 +10,6 @@ app.get('/', (_request, response) => {
 });
 
 app.get('/status', (_req, res) => res.status(200).send({ message: '[Healthy] - API on!!!' }));
+app.use('/*', (_req, res) => res.status(404).json({ message: 'Not found!' }));
 
 app.listen(port, () => console.log('ouvindo porta', port));
