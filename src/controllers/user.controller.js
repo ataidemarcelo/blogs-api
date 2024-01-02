@@ -1,3 +1,5 @@
+const bcrypt = require('bcryptjs');
+
 const { userService } = require('../services');
 const jwtUtils = require('../utils/jwt.util');
 
@@ -17,15 +19,27 @@ const createUser = async (req, res, next) => {
     return next(newError);
   }
   
-  const newUser = await userService.createUser(value);
+  const { displayName, password, email, image } = value;
+
+  const passwordHash = await bcrypt.hash(password, 8);
+
+  const dataNewUser = {
+    displayName,
+    email,
+    password: passwordHash,
+    image
+  }
+  const newUser = await userService.createUser(dataNewUser);
 
   const token = jwtUtils.createToken({ 
     userId: newUser.dataValues.id,
     name: newUser.dataValues.displayName,
     avatar: newUser.dataValues.image,
+    email: newUser.dataValues.email
   });
 
-  return res.status(201).json({ token });
+  // Os dados já estão no token (payload)
+  return res.status(201).json({ newUser, token });
 };
 
 const listUsers = async (_req, res) => {
