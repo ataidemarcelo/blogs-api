@@ -1,3 +1,5 @@
+const bcrypt = require('bcryptjs');
+
 const { User } = require('../models');
 const { loginFieldsSchema } = require('./validations/joi/schema.login');
 const { createToken } = require('../utils/jwt.util');
@@ -13,11 +15,19 @@ const authenticateUser = async (validData) => {
 
   const [user] = await User.findAll({ where: { email } });
 
-  if (!user || password !== user.dataValues.password) {
-    // é possível usar retornos de erros personalizados
-    const error = new Error('Invalid fields');
-    error.statusCode = 400;
+  if (!user) {
+    const error = new Error('Invalid credentials!');
+    error.statusCode = 401;
 
+    throw error;
+  }
+
+  const isValidPassword = await bcrypt.compare(password, user.dataValues.password);
+
+  if (!isValidPassword) {
+    const error = new Error('Invalid credentials!-passowrd');
+    error.statusCode = 400;
+    
     throw error;
   }
 
